@@ -49,3 +49,16 @@ variable "user_data" {
   description = "The user data for launching web portal"
   type        = any
 }
+
+variable "health_check_grace_period" {
+  description = "The amount of time, in seconds, that Auto Scaling waits before checking the health status of an EC2 instance that has come into service"
+  type        = number
+  default     = 300
+}
+
+
+variable "associate_public_ip_address" {
+  description = "Associate public IP address"
+  type        = bool
+  default     = false
+}

@@ -46,3 +46,46 @@ module "asg" {
   user_data          = base64encode(file("user_data.sh"))
 }
 
+##################################### RDS #################################
+module "rds" {
+  source                  = "../../modules/Rds"
+  allocated_storage       = var.allocated_storage
+  storage_type            = var.storage_type
+  engine                  = var.engine
+  engine_version          = var.engine_version
+  instance_class          = var.instance_class
+  db_identifier           = var.db_identifier
+  db_username             = var.db_username
+  db_password             = var.db_password
+  primary_kms_key_arn     = module.kms.primary_kms_key_arn
+  backup_kms_key_arn      = module.kms.backup_kms_key_arn
+  rds_monitoring_role_arn = module.iam.rds_monitoring_role_arn
+  db_subnet_ids           = module.vpc.db_subnet_ids
+  backup_region           = var.backup_region
+  rds_sg_id               = module.vpc.rds_sg_id
+  multi_az                = var.multi_az
+  skip_final_snapshot     = var.skip_final_snapshot
+}
+
+
+############################### CloudWatch ########################################  
+# Cloudwatch Alarm Trigger
+module "cloudwatch" {
+  source                      = "../../modules/cloudwatch"
+  autoscaling_group_name      = module.asg.autoscaling_group_name
+  autoscaling_policy_up_arn   = module.asg.autoscaling_policy_up_arn
+  autoscaling_policy_down_arn = module.asg.autoscaling_policy_down_arn
+}
+
+
+############################### KMS ########################################
+module "kms" {
+  source        = "../../modules/kms"
+  backup_region = var.backup_region
+}
+
+
+############################### IAM ########################################
+module "iam" {
+  source = "../../modules/iam"
+}

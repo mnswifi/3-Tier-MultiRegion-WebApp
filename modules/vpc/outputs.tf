@@ -25,3 +25,14 @@ output "dev_elb_sg" {
   value       = aws_security_group.dev_elb_sg.id
 }
 
+
+output "rds_sg_id" {
+  description = "The security group id for db tier"
+  value       = aws_security_group.rds_db_sg[0].id
+}
+
+output "db_subnet_ids" {
+  description = "The db subnet id"
+  value       = [for subnet in aws_subnet.db_subnet : subnet.id]
+}
+

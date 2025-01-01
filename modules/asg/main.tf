@@ -6,7 +6,7 @@ resource "aws_launch_template" "dev_temp" {
   user_data     = var.user_data
 
   network_interfaces {
-    associate_public_ip_address = false
+    associate_public_ip_address = var.associate_public_ip_address
     security_groups             = var.security_group_ids
   }
 }
@@ -19,7 +19,7 @@ resource "aws_autoscaling_group" "webapp_asg" {
   max_size                  = var.max_size
   desired_capacity          = var.desired_capacity
   health_check_type         = var.health_check_type
-  health_check_grace_period = 300
+  health_check_grace_period = var.health_check_grace_period
   force_delete              = true
   lifecycle {
     create_before_destroy = true
@@ -36,6 +36,8 @@ resource "aws_autoscaling_group" "webapp_asg" {
     propagate_at_launch = true
   }
 }
+
+
 
 ######################## Auto Scaling Policy ############################
 # Scale up policy
@@ -73,39 +75,3 @@ resource "aws_autoscaling_policy" "webapp_asg_step_scale_down" {
   }
 }
 
-######################## Cloudwatch Alarm Trigger ############################
-# Scale up the instances when CPU utilization is greater than 70%
-resource "aws_cloudwatch_metric_alarm" "webapp_asg_alarm" {
-  alarm_name          = "webapp-asg-alarm"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "70"
-  alarm_description   = "This metric monitors ec2 instance CPU utilization"
-  alarm_actions       = [aws_autoscaling_policy.webapp_asg_step_scale_up.arn]
-  dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.webapp_asg.name
-  }
-  actions_enabled = true
-}
-
-# Scale down the instances when CPU utilization is less than 30%
-resource "aws_cloudwatch_metric_alarm" "webapp_asg_alarm_down" {
-  alarm_name          = "webapp-asg-alarm-down"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "30"
-  alarm_description   = "This metric monitors ec2 instance CPU utilization"
-  alarm_actions       = [aws_autoscaling_policy.webapp_asg_step_scale_down.arn]
-  dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.webapp_asg.name
-  }
-  actions_enabled = true
-}

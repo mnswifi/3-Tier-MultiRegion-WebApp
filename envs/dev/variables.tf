@@ -114,3 +114,73 @@ variable "health_check_type" {
   description = "Health check type"
 }
 
+################################## RDS #############################
+
+#allocated storage
+variable "allocated_storage" {
+  description = "value for allocated storage"
+  type        = number
+}
+
+#storage type
+variable "storage_type" {
+  description = "value for storage type"
+  type        = string
+}
+
+#engine
+variable "engine" {
+  description = "value for engine"
+  type        = string
+}
+
+#engine version
+variable "engine_version" {
+  description = "value for engine version"
+  type        = string
+}
+
+#instance class
+variable "instance_class" {
+  description = "value for instance class"
+  type        = string
+}
+
+#identifier
+variable "db_identifier" {
+  description = "value for identifier"
+  type        = string
+}
+
+#username
+variable "db_username" {
+  description = "value for username"
+  type        = string
+  sensitive   = true
+}
+
+#password
+variable "db_password" {
+  description = "value for password"
+  type        = string
+  sensitive   = true
+}
+
+#backup region
+variable "backup_region" {
+  description = "AWS provider alias for cross region RDS backup"
+  type        = string
+}
+
+#multi az
+
+variable "multi_az" {
+  description = "Enable Multi-AZ deployment for high availability"
+  type        = bool
+}
+
+#skip final snapshot
+variable "skip_final_snapshot" {
+  description = "Determines whether a final DB snapshot is created before the DB instance is deleted."
+  type        = bool
+}
