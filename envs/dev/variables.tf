@@ -184,3 +184,14 @@ variable "skip_final_snapshot" {
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted."
   type        = bool
 }
+
+#skip final snapshot for replica
+variable "skip_final_snapshot_replica" {
+  description = "Determines whether a final DB snapshot for replica is created before the DB instance is deleted."
+  type        = bool
+}
+
+variable "region" {
+  description = "AWS region"
+  type        = string
+}

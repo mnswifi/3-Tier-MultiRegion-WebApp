@@ -19,7 +19,7 @@ resource "aws_db_instance" "primary_db" {
   backup_window             = "03:00-04:00"
   maintenance_window        = "mon:04:00-mon:04:30"
   skip_final_snapshot       = var.skip_final_snapshot
-  final_snapshot_identifier = "my-db"
+  final_snapshot_identifier = "${var.name_prefix}-db"
 
   # Enable Enhanced Monitoring
   monitoring_interval          = 60
@@ -38,25 +38,25 @@ resource "aws_db_instance" "primary_db" {
   multi_az = true
 
   tags = {
-    Name = "webapp-rds"
+    Name = "${var.name_prefix}-rds"
   }
 }
 
 ###################### RDS Subnet Group ######################
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "my-db-subnet-group"
+  name       = "${var.name_prefix}-db-subnet-group"
   subnet_ids = var.db_subnet_ids
 
   tags = {
-    Name = "My DB Subnet Group"
+    Name = "${var.name_prefix} DB Subnet Group"
   }
 }
 
 ###################### RDS Parameter Group ######################
 
 resource "aws_db_parameter_group" "db_pmg" {
-  name   = "my-db-pg"
+  name   = "${var.name_prefix}-db-pg"
   family = "mysql5.7"
 
   parameter {
@@ -77,8 +77,8 @@ resource "aws_db_instance" "db_replica" {
   backup_retention_period      = 7
   backup_window                = "03:00-04:00"
   maintenance_window           = "mon:04:00-mon:04:30"
-  skip_final_snapshot          = var.skip_final_snapshot
-  final_snapshot_identifier    = "my-db"
+  skip_final_snapshot          = var.skip_final_snapshot_replica
+  final_snapshot_identifier    = "${var.name_prefix}-db"
   monitoring_interval          = 60
   monitoring_role_arn          = var.rds_monitoring_role_arn
   performance_insights_enabled = true
@@ -89,6 +89,10 @@ resource "aws_db_instance" "db_replica" {
 
   # Enable Multi-AZ deployment for high availability
   multi_az = true
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 

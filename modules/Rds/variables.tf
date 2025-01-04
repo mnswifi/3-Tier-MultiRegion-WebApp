@@ -100,3 +100,15 @@ variable "skip_final_snapshot" {
   description = "Determines whether a final DB snapshot is created before the DB instance is deleted."
   type        = bool
 }
+
+
+variable "skip_final_snapshot_replica" {
+  description = "Determines whether a final DB snapshot is created before the DB instance is deleted for replica."
+  type        = bool
+}
+
+variable "name_prefix" {
+  description = "The prefix for the name of the resources"
+  type        = string
+  default     = "webapp"
+}

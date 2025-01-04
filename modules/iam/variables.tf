@@ -4,3 +4,8 @@ variable "role_name" {
   type        = string
   default     = "rds-monitoring-role"
 }
+
+variable "region" {
+  description = "The region"
+  type        = string
+}

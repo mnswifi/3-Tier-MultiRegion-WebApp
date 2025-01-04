@@ -7,6 +7,9 @@
 ## Usage - Sample tfvars
 
 ```bash
+# Default region
+region = "us-east-1"
+
 ######################## VPC ######################################
 cidr_block = "10.0.0.0/16"
 egress = [{
@@ -52,17 +55,18 @@ instance_type     = "t2.micro"
 
 
 ################################# RDS ##################################	
-allocated_storage = 20
-storage_type      = "gp2"
-engine            = "mysql"
-engine_version    = "5.7"
-instance_class    = "db.t3.medium"
-db_identifier     = "mydb"
-db_username       = "dbuser"
-db_password       = "dbpassword"
-backup_region     = "us-east-2"
-multi_az          = true
-skip_final_snapshot = false
+allocated_storage           = 20
+storage_type                = "gp2"
+engine                      = "mysql"
+engine_version              = "5.7"
+instance_class              = "db.t3.medium"
+db_identifier               = "webapp-db"
+db_username                 = "dbuser"
+db_password                 = "dbpassword"
+backup_region               = "us-east-2"
+multi_az                    = true
+skip_final_snapshot         = true
+skip_final_snapshot_replica = true
 
 ```
 

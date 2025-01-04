@@ -5,6 +5,10 @@ resource "aws_launch_template" "dev_temp" {
   instance_type = var.instance_type
   user_data     = var.user_data
 
+  iam_instance_profile {
+    name = var.iam_instance_profile
+  }
+
   network_interfaces {
     associate_public_ip_address = var.associate_public_ip_address
     security_groups             = var.security_group_ids

@@ -62,3 +62,8 @@ variable "associate_public_ip_address" {
   type        = bool
   default     = false
 }
+
+variable "iam_instance_profile" {
+  description = "The IAM instance profile to associate with the instances"
+  type        = string
+}
