@@ -30,7 +30,7 @@ DB_PASSWORD=$(aws ssm get-parameter --name "/webapp/rds/password" --with-decrypt
 DB_ENDPOINT=$(echo $DB_ENDPOINT | sed 's/:3306//')
 
 # test connection to RDS
-sudo bash -c "printf '<?php\n\$servername = \"%s\";\n\$username = \"%s\";\n\$password = \"%s\";\n\$dbname = \"mysql\";\n\n\$conn = new mysqli(\$servername, \$username, \$password, \$dbname);\n\nif (\$conn->connect_error) {\n    die(\"Connection failed: \" . \$conn->connect_error);\n}\necho \"Connected RDS Databse successfully\";\n\$conn->close();\n?>' \"$DB_ENDPOINT\" \"$DB_USERNAME\" \"$DB_PASSWORD\" > /var/www/html/db_test.php"
+sudo bash -c "printf '<?php\n\$servername = \"%s\";\n\$username = \"%s\";\n\$password = \"%s\";\n\$dbname = \"mysql\";\n\n\$conn = new mysqli(\$servername, \$username, \$password, \$dbname);\n\nif (\$conn->connect_error) {\n    die(\"Connection failed: \" . \$conn->connect_error);\n}\necho \"Connected to RDS Database successfully!!!\";\n\$conn->close();\n?>' \"$DB_ENDPOINT\" \"$DB_USERNAME\" \"$DB_PASSWORD\" > /var/www/html/db_test.php"
 
 # Set permissions for the PHP file
 chmod 644 /var/www/html/db_test.php
